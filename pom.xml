@@ -27,8 +27,8 @@
 		<!-- Sonar/Jacoco integration. Note that these properties need to be defined outside the "coverage" profile
 		because we want to be to able to execute mvn sonar:sonar without passing a profile -->
 		<!-- Tells Sonar to use jacoco for coverage results -->
-		<sonar.projectKey>es.golemdr.aplicacion:aplicacion</sonar.projectKey>
-		<sonar.projectName>aplicacion</sonar.projectName>
+		<sonar.projectKey>es.golemdr.wittytool:wittytool</sonar.projectKey>
+		<sonar.projectName>wittytool</sonar.projectName>
 		<sonar.projectVersion>${yearMonth}</sonar.projectVersion>
 		<sonar.language>java</sonar.language>
 		<sonar.sourceEncoding>ISO-8859-1</sonar.sourceEncoding>
