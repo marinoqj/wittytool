@@ -1,0 +1,154 @@
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+    <definition name="baseLayout" template="/WEB-INF/jsp/common/layout.jsp">    
+        <put-attribute name="title"  value="Proyecto"/>
+        <put-attribute name="header" value="/WEB-INF/jsp/common/header.jsp"/>
+        <put-attribute name="footer" value="/WEB-INF/jsp/common/footer.jsp"/>
+    </definition>
+    
+    <definition name="loginLayout" template="/WEB-INF/jsp/common/loginLayout.jsp">    
+        <put-attribute name="title"  value="Cuestionarios"/>
+        <put-attribute name="footer" value="/WEB-INF/jsp/common/footer.jsp"/>
+    </definition>  
+    
+    <definition name="Login" extends="loginLayout">
+        <put-attribute name="title" value="Proyecto"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/login.jsp"/>
+    </definition>     
+   
+    <definition name="Home" extends="baseLayout">
+        <put-attribute name="title" value="Proyecto"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/home.jsp"/>
+    </definition>
+      
+	<definition name="ErrorGenerico" extends="baseLayout">
+	  <put-attribute name="title" value="Página de error"/>
+	  <put-attribute name="body" value="/WEB-INF/jsp/common/error_generico.jsp"/>
+	</definition> 
+	
+  <!-- Anotaciones -->
+    <definition name="AnotacionForm" extends="baseLayout">
+        <put-attribute name="title" value="Alta de anotaciones"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/anotaciones/anotacionForm.jsp"/>
+    </definition>
+
+    <definition name="ListadoAnotaciones" extends="baseLayout">
+        <put-attribute name="title" value="Listado de anotaciones"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/anotaciones/listadoAnotaciones.jsp"/>
+    </definition>
+
+
+    <!-- Bitacoras -->
+    <definition name="BitacoraForm" extends="baseLayout">
+        <put-attribute name="title" value="Alta de bitacoras"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/bitacoras/bitacoraForm.jsp"/>
+    </definition>
+
+    <definition name="ListadoBitacoras" extends="baseLayout">
+        <put-attribute name="title" value="Listado de bitacoras"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/bitacoras/listadoBitacoras.jsp"/>
+    </definition>
+
+
+    <!-- ConstantesAuxiliares -->
+    <definition name="ConstanteAuxiliarForm" extends="baseLayout">
+        <put-attribute name="title" value="Alta de constantesauxiliares"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/constantesauxiliares/constanteauxiliarForm.jsp"/>
+    </definition>
+
+    <definition name="ListadoConstantesAuxiliares" extends="baseLayout">
+        <put-attribute name="title" value="Listado de constantesauxiliares"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/constantesauxiliares/listadoConstantesAuxiliares.jsp"/>
+    </definition>
+
+
+    <!-- Eventos -->
+    <definition name="EventoForm" extends="baseLayout">
+        <put-attribute name="title" value="Alta de eventos"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/eventos/eventoForm.jsp"/>
+    </definition>
+
+    <definition name="ListadoEventos" extends="baseLayout">
+        <put-attribute name="title" value="Listado de eventos"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/eventos/listadoEventos.jsp"/>
+    </definition>
+
+
+    <!-- Funcionalidades -->
+    <definition name="FuncionalidadForm" extends="baseLayout">
+        <put-attribute name="title" value="Alta de funcionalidades"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/funcionalidades/funcionalidadForm.jsp"/>
+    </definition>
+
+    <definition name="ListadoFuncionalidades" extends="baseLayout">
+        <put-attribute name="title" value="Listado de funcionalidades"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/funcionalidades/listadoFuncionalidades.jsp"/>
+    </definition>
+
+
+    <!-- Incidencias -->
+    <definition name="IncidenciaForm" extends="baseLayout">
+        <put-attribute name="title" value="Alta de incidencias"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/incidencias/incidenciaForm.jsp"/>
+    </definition>
+
+    <definition name="ListadoIncidencias" extends="baseLayout">
+        <put-attribute name="title" value="Listado de incidencias"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/incidencias/listadoIncidencias.jsp"/>
+    </definition>
+
+
+    <!-- Proyectos -->
+    <definition name="ProyectoForm" extends="baseLayout">
+        <put-attribute name="title" value="Alta de proyectos"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/proyectos/proyectoForm.jsp"/>
+    </definition>
+
+    <definition name="ListadoProyectos" extends="baseLayout">
+        <put-attribute name="title" value="Listado de proyectos"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/proyectos/listadoProyectos.jsp"/>
+    </definition>
+
+
+    <!-- Roles -->
+    <definition name="RolForm" extends="baseLayout">
+        <put-attribute name="title" value="Alta de roles"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/roles/rolForm.jsp"/>
+    </definition>
+
+    <definition name="ListadoRoles" extends="baseLayout">
+        <put-attribute name="title" value="Listado de roles"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/roles/listadoRoles.jsp"/>
+    </definition>
+
+
+    <!-- Sprints -->
+    <definition name="SprintForm" extends="baseLayout">
+        <put-attribute name="title" value="Alta de sprints"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/sprints/sprintForm.jsp"/>
+    </definition>
+
+    <definition name="ListadoSprints" extends="baseLayout">
+        <put-attribute name="title" value="Listado de sprints"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/sprints/listadoSprints.jsp"/>
+    </definition>
+
+
+    <!-- Usuarios -->
+    <definition name="UsuarioForm" extends="baseLayout">
+        <put-attribute name="title" value="Alta de usuarios"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/usuarios/usuarioForm.jsp"/>
+    </definition>
+
+    <definition name="ListadoUsuarios" extends="baseLayout">
+        <put-attribute name="title" value="Listado de usuarios"/>
+        <put-attribute name="body"  value="/WEB-INF/jsp/usuarios/listadoUsuarios.jsp"/>
+    </definition>
+	
+	
+      
+</tiles-definitions>

@@ -1,0 +1,88 @@
+.margen-sup {
+    margin-top: 150px;
+}
+
+.mt-6 {
+	margin-top: 4rem!important;
+}
+
+
+.fondo-azul-claro {
+	background-color: #e3f2fd;
+}
+
+.azul-claro {
+	color: #e3f2fd;
+}
+
+.leyenda {
+	font-size: 0.875em;
+}
+
+.morado {
+	color: #8e5ea2;
+}
+
+.azul {
+	color: #3e95cd;
+}
+
+.verde-lima{
+	 color: #caf270;
+}
+
+.verde{
+	color: #45c490;
+}
+
+.turquesa {
+	color: #008d93;
+}
+
+.azul-oscuro {
+	color: #2e5468;
+}
+
+.azul-grisaceo {
+	color: #97bbcd;
+}
+
+.gris {
+	color: #dcdcdc;
+}
+
+.vino {
+	color: #5b1647;
+}
+
+.granate {
+	color: #93073e;
+}
+
+.carmesi {
+	color: #c90035;
+} 
+
+.naranja {
+	color: #ff5627;
+}
+
+.amarillo {
+	color: #ffc400;
+}
+
+.card-oscura {
+	 background-color: #252429;
+	 color: white;
+}
+
+
+.grah-container {
+  width:100%;
+  display:block;
+  background:#fff;
+}
+
+#rojo {	
+	color:#f00;
+}

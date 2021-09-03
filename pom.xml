@@ -1,0 +1,676 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>es.golemdr.wittytool</groupId>
+	<artifactId>wittytool</artifactId>
+	<name>wittytool</name>
+	<packaging>war</packaging>
+	<version>1.0</version>
+	<description>Proyecto monolitico</description>
+	
+
+	<properties>
+		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding> 
+		<java-version>1.8</java-version>
+		<org.springframework-version>5.2.16.RELEASE</org.springframework-version>
+		<spring-security-version>5.2.12.RELEASE</spring-security-version>
+		<org.aspectj-version>1.8.1</org.aspectj-version>
+		<hibernate.version>5.2.11.Final</hibernate.version>
+		<c3p0.version>0.9.5.2</c3p0.version>
+		<!--  This format is used by SonarQube. If you need another format see "buildnumber-maven-plugin" -->
+		<maven.build.timestamp.format>MM.yyyy</maven.build.timestamp.format>
+		<yearMonth>${maven.build.timestamp}</yearMonth>    
+		<!-- ************************-->
+		<!-- Sonar/Reporting settings -->
+		<!-- ************************-->
+		<!-- Sonar/Jacoco integration. Note that these properties need to be defined outside the "coverage" profile
+		because we want to be to able to execute mvn sonar:sonar without passing a profile -->
+		<!-- Tells Sonar to use jacoco for coverage results -->
+		<sonar.projectKey>es.golemdr.aplicacion:aplicacion</sonar.projectKey>
+		<sonar.projectName>aplicacion</sonar.projectName>
+		<sonar.projectVersion>${yearMonth}</sonar.projectVersion>
+		<sonar.language>java</sonar.language>
+		<sonar.sourceEncoding>ISO-8859-1</sonar.sourceEncoding>
+		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+		<!-- Jacoco version to use -->
+		<jacoco.version>0.7.2.201409121644</jacoco.version>
+		<!-- The Sonar Jacoco Listener for JUnit to extract coverage details per test -->
+		<sonar-jacoco-listeners.version>1.4</sonar-jacoco-listeners.version>
+		<!-- Don't let Sonar execute tests. We will ask it to Maven 'sonar.dynamicAnalysis' is deprecated since version 4.3 and should no longer be used. -->
+		<!-- <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis> -->
+		<!-- The system property jacoco.outputDir needs to be override on the command line
+		    with an absolute path if you want to merge results from all modules.
+		    Example in a Jenkisn build where ${WORKSPACE} is defined and your project in the root directory of the workspace :
+		    mvn clean install -Prun-its,coverage -Djacoco.outputDir=${WORKSPACE}/target
+		    Note that unfortunately using the following does not work because of
+		    http://jira.codehaus.org/browse/SONAR-3427:
+		<jacoco.outputDir>${session.executionRootDirectory}/target/</jacoco.outputDir>
+		-->
+		<jacoco.outputDir>${project.build.directory}</jacoco.outputDir>
+		<!-- Jacoco output file for UTs -->
+		<jacoco.out.ut.file>jacoco-ut.exec</jacoco.out.ut.file>
+		<!-- Tells Sonar where the Jacoco coverage result file is located for Unit Tests -->
+		<sonar.jacoco.reportPath>${jacoco.outputDir}/${jacoco.out.ut.file}</sonar.jacoco.reportPath>
+		<!-- Jacoco output file for ITs -->
+		<jacoco.out.it.file>jacoco-it.exec</jacoco.out.it.file>
+		<!-- Tells Sonar where the Jacoco coverage result file is located for Integration Tests -->
+		<sonar.jacoco.itReportPath>${jacoco.outputDir}/${jacoco.out.it.file}</sonar.jacoco.itReportPath>
+		<!-- <sonar.junit.reportsPath>${project.build.directory}/surefire-reports/</sonar.junit.reportsPath> -->
+		<!-- <sonar.tests>src/test/java</sonar.tests> -->
+		<!-- === END of Sonar/Reporting settings === -->
+	</properties>
+
+	<dependencies>
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context-support</artifactId>
+		    <version>${org.springframework-version}</version>
+		</dependency>		
+
+		<!-- Spring Security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring-security-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring-security-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${spring-security-version}</version>
+		</dependency>		
+
+		<!-- AspectJ -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>
+		
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.14.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>2.14.1</version>
+		</dependency>
+
+		<!-- @Inject -->
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+				
+		<!-- Servlet API -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>javax.servlet.jsp-api</artifactId>
+			<version>2.3.2-b02</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+		<!-- Jackson JSON Processor -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.12.5</version>
+		</dependency>
+
+		<!-- Rome Atom+RSS -->
+		<dependency>
+			<groupId>com.rometools</groupId>
+			<artifactId>rome</artifactId>
+			<version>1.9.0</version>
+		</dependency>
+		
+		<!-- JSR 303 with Hibernate Validator -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>2.0.1.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>6.2.0.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>javax.el-api</artifactId>
+			<version>3.0.1-b04</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.el</artifactId>
+			<version>3.0.1-b08</version>
+		</dependency>
+
+		<!-- Joda Time Library -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.9.9</version>
+		</dependency>
+
+		<!-- File Upload -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.3.3</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.7</version>
+		</dependency>
+
+			
+		<!-- Test -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework-version}</version>
+			<scope>test</scope>
+		</dependency>
+			<dependency>
+			    <groupId>org.junit.jupiter</groupId>
+			    <artifactId>junit-jupiter-engine</artifactId>
+			    <version>5.6.2</version>
+			    <scope>test</scope>
+			</dependency>
+			<dependency>
+			    <groupId>org.hamcrest</groupId>
+			    <artifactId>hamcrest</artifactId>
+			    <version>2.2</version>
+			    <scope>test</scope>
+			</dependency>					
+		
+		<!-- No incluido en aplicación inicial -->
+		
+		<!-- Tiles -->
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-jsp</artifactId>
+			<version>3.0.8</version>
+		</dependency>
+		
+		<!-- Para hacer llamadas REST -->
+		<dependency>
+	  		<groupId>org.apache.httpcomponents</groupId>
+	  		<artifactId>httpclient</artifactId>
+	  		<version>4.5.13</version>
+		</dependency>	
+		
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-math3</artifactId>
+		    <version>3.6.1</version>
+		</dependency>			
+		
+		<!-- Hibernate - JPA -->
+		<dependency>
+		    <groupId>org.springframework.data</groupId>
+		    <artifactId>spring-data-jpa</artifactId>
+		    <version>2.3.3.RELEASE</version>
+		</dependency>
+		<dependency>
+		    <groupId>jakarta.persistence</groupId>
+		    <artifactId>jakarta.persistence-api</artifactId>
+		    <version>2.2.3</version>
+		</dependency>
+		<!-- Hibernate ORM -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<!-- Hibernate-C3P0 Integration -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		
+		<!-- Driver de PostgreSQL -->
+	    <dependency>
+	        <groupId>org.postgresql</groupId>
+	        <artifactId>postgresql</artifactId>
+	        <version>9.4.1211.jre7</version>
+	    </dependency>		
+
+		
+		<!-- API, java.xml.bind module -->
+		<dependency>
+		    <groupId>jakarta.xml.bind</groupId>
+		    <artifactId>jakarta.xml.bind-api</artifactId>
+		    <version>2.3.2</version>
+		</dependency>
+		
+		<!-- Runtime, com.sun.xml.bind module -->
+		<dependency>
+		    <groupId>org.glassfish.jaxb</groupId>
+		    <artifactId>jaxb-runtime</artifactId>
+		    <version>2.3.2</version>
+		</dependency>
+		
+		<!-- FIN Hibernate - JPA -->	
+		
+		<!-- Quartz -->
+		<dependency>
+		    <groupId>org.quartz-scheduler</groupId>
+		    <artifactId>quartz</artifactId>
+		    <version>2.3.2</version>
+		</dependency>
+		
+		<!-- PDF Box -->
+		<dependency>
+		    <groupId>org.apache.pdfbox</groupId>
+		    <artifactId>pdfbox</artifactId>
+		    <version>2.0.24</version>
+		</dependency>
+		
+		<!-- Excel -->	
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi</artifactId>
+		    <version>3.17</version>
+		</dependency>	
+		
+							
+		<dependency>
+		    <groupId>commons-lang</groupId>
+		    <artifactId>commons-lang</artifactId>
+		    <version>2.5</version>
+		</dependency>
+
+		
+		<!-- Jasper -->
+<!-- 		<dependency> -->
+<!-- 		    <groupId>com.lowagie</groupId> -->
+<!-- 		    <artifactId>itext</artifactId> -->
+<!-- 		    <version>2.1.7</version> -->
+<!-- 		</dependency> -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi</artifactId>
+		    <version>3.14</version>
+		</dependency>	
+     	<dependency>
+             <groupId>net.sf.jasperreports</groupId>
+             <artifactId>jasperreports</artifactId>
+             <version>6.17.0</version>
+        </dependency>
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports-fonts</artifactId>
+			<version>6.0.0</version>			
+		</dependency>        
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		    <version>2.8.7</version>
+		</dependency>        
+		<!-- Fin Jasper -->		
+
+		<!-- Mail -->
+		<dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>javax.mail-api</artifactId>
+		    <version>1.5.5</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.sun.mail</groupId>
+		    <artifactId>javax.mail</artifactId>
+		    <version>1.5.5</version>
+		</dependency>		
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+		
+	</dependencies>
+
+	<!-- Para generar el WAR para un entorno u otro con profile -->	
+	<profiles>
+		<profile>
+			<id>local</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<environment.properties>application-local.properties</environment.properties>
+				<environment.name>LOCAL</environment.name>
+			</properties>
+		</profile>
+		<profile>
+			<id>dev-one</id>
+			<properties>
+				<environment.properties>application-dev-one.properties</environment.properties>
+				<environment.name>DEV-ONE</environment.name>
+			</properties>
+		</profile>
+		<profile>
+			<id>dev-two</id>
+			<properties>
+				<environment.properties>application-dev-two.properties</environment.properties>
+				<environment.name>DEV-TWO</environment.name>
+			</properties>
+		</profile>					
+		<profile>
+			<id>prod</id>
+			<properties>
+				<environment.properties>application-prod.properties</environment.properties>
+				<environment.name>PROD</environment.name>
+			</properties>
+		</profile>			
+
+
+		<!-- coverage -->
+		<profile>
+		    <id>coverage</id>
+		    <build>
+		        <plugins>
+		            <plugin>
+		                <groupId>org.apache.maven.plugins</groupId>
+		                <artifactId>maven-surefire-plugin</artifactId>
+		                <configuration>
+		                    <argLine>${jacoco.agent.ut.arg}</argLine>
+		                    <!-- Specific to generate mapping between tests and covered code -->
+		                    <properties>
+		                        <property>
+		                            <name>listener</name>
+		                            <value>org.sonar.java.jacoco.JUnitListener</value>
+		                        </property>
+		                    </properties>
+		                    <!-- test failure ignore -->
+		                    <testFailureIgnore>true</testFailureIgnore>
+		                </configuration>
+		            </plugin>
+		            <plugin>
+		                <groupId>org.apache.maven.plugins</groupId>
+		                <artifactId>maven-failsafe-plugin</artifactId>
+		                <configuration>
+		                    <argLine>-Xmx1024m -XX:MaxPermSize=256m ${jacoco.agent.it.arg}
+		                    </argLine>
+		                    <!-- Specific to generate mapping between tests and covered code -->
+		                    <properties>
+		                        <property>
+		                            <name>listener</name>
+		                            <value>org.sonar.java.jacoco.JUnitListener</value>
+		                        </property>
+		                    </properties>
+		                    <!-- Let's put failsafe reports with surefire to have access to tests 
+		                        failures/success reports in sonar -->
+		                    <reportsDirectory>${project.build.directory}/surefire-reports
+		                    </reportsDirectory>
+		                </configuration>
+		            </plugin>
+		            <plugin>
+		                <groupId>org.jacoco</groupId>
+		                <artifactId>jacoco-maven-plugin</artifactId>
+		                <version>${jacoco.version}</version>
+		                <executions>
+		                    <!-- Prepares a variable, jacoco.agent.ut.arg, that contains the info 
+		                        to be passed to the JVM hosting the code being tested. -->
+		                    <execution>
+		                        <id>prepare-ut-agent</id>
+		                        <phase>process-test-classes</phase>
+		                        <goals>
+		                            <goal>prepare-agent</goal>
+		                        </goals>
+		                        <configuration>
+		                            <destFile>${sonar.jacoco.reportPath}</destFile>
+		                            <propertyName>jacoco.agent.ut.arg</propertyName>
+		                            <append>true</append>
+		                        </configuration>
+		                    </execution>
+		                    <!-- Prepares a variable, jacoco.agent.it.arg, that contains the info 
+		                        to be passed to the JVM hosting the code being tested. -->
+		                    <execution>
+		                        <id>prepare-it-agent</id>
+		                        <phase>pre-integration-test</phase>
+		                        <goals>
+		                            <goal>prepare-agent</goal>
+		                        </goals>
+		                        <configuration>
+		                            <destFile>${sonar.jacoco.itReportPath}</destFile>
+		                            <propertyName>jacoco.agent.it.arg</propertyName>
+		                            <append>true</append>
+		                        </configuration>
+		                    </execution>
+		                </executions>
+		            </plugin>		            
+		        </plugins>
+		    </build>
+		    <dependencies>
+		        <dependency>
+		            <groupId>org.codehaus.sonar-plugins.java</groupId>
+		            <artifactId>sonar-jacoco-listeners</artifactId>
+		            <version>${sonar-jacoco-listeners.version}</version>
+		            <scope>test</scope>
+		        </dependency>
+		    </dependencies>
+		</profile>
+	</profiles>	
+
+	<build>
+		<finalName>${project.name}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<source>${java-version}</source>
+					<target>${java-version}</target>					
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>copy-application-properties</id>
+						<phase>package</phase>
+						<configuration>
+							<target>
+								<delete file="src/main/resources/application.properties"/>
+								<copy file="src/main/resources/${environment.properties}" tofile="src/main/resources/application.properties"/>
+							</target>
+						</configuration>
+						<goals>
+							<goal>
+								run
+							</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>reset-application-properties</id>
+						<phase>verify</phase>
+						<configuration>
+							<target>
+								<delete file="src/main/resources/application.properties"/>
+								<copy file="src/main/resources/application-local.properties" tofile="src/main/resources/application.properties"/>
+							</target>
+						</configuration>
+						<goals>
+							<goal>
+								run
+							</goal>
+						</goals>
+					</execution>					
+				</executions>			
+			</plugin>
+			<plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.9.0.2155</version>
+            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.20.1</version>
+				<configuration>
+					<includes>
+						<include>**/*Tests.java</include>
+					</includes>
+					<excludes>
+						<exclude>**/Abstract*.java</exclude>
+					</excludes>
+					<junitArtifactName>junit:junit</junitArtifactName>
+					<argLine>-Xmx512m</argLine>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>install</id>
+						<phase>install</phase>
+						<goals>
+							<goal>sources</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>aspectj-maven-plugin</artifactId>
+				<version>1.11</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.aspectj</groupId>
+						<artifactId>aspectjrt</artifactId>
+						<version>${org.aspectj-version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.aspectj</groupId>
+						<artifactId>aspectjtools</artifactId>
+						<version>${org.aspectj-version}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>       <!-- weave all main classes -->
+							<goal>test-compile</goal>  <!-- weave all test classes -->
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<outxml>true</outxml>
+					<complianceLevel>${java-version}</complianceLevel>
+					<source>${java-version}</source>
+					<target>${java-version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+			    <groupId>org.eclipse.m2e</groupId>
+			    <artifactId>lifecycle-mapping</artifactId>
+			    <version>1.0.0</version>
+			    <configuration>
+			    <lifecycleMappingMetadata>
+			        <pluginExecutions>
+			        <pluginExecution>
+			            <pluginExecutionFilter>
+			            <groupId>io.fabric8</groupId>
+			            <artifactId>vertx-maven-plugin</artifactId>
+			            <versionRange>[1.0.4,)</versionRange>
+			            <goals>
+			                <goal>initialize</goal>
+			            </goals>
+			            </pluginExecutionFilter>
+			            <action>
+			            <ignore />
+			            </action>
+			        </pluginExecution>
+			        </pluginExecutions>
+			    </lifecycleMappingMetadata>
+			    </configuration>
+			</plugin>			
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.4.8.v20171121</version>
+				<configuration>
+					<webApp>
+						<contextPath>/${project.artifactId}</contextPath>
+					</webApp>
+				</configuration>
+			</plugin>			
+			 <!--  Para generar la imagen de Docker -->			
+             <plugin>
+			  <groupId>com.spotify</groupId>
+			  <artifactId>dockerfile-maven-plugin</artifactId>
+			  <version>1.4.13</version>
+			  <executions>
+			    <execution>
+			      <id>default</id>
+			      <goals>
+			        <goal>build</goal>
+			        <goal>push</goal>
+			      </goals>
+			    </execution>
+			  </executions>
+			  <configuration>
+			  	<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                <username>marinoqj</username>
+                <password>8e667415-0922-4ec0-b06b-2896c4c5aa58</password>
+			    <repository>marinoqj/aplicacion</repository>
+			    <tag>${project.version}</tag>
+			  </configuration>
+			</plugin>			
+		</plugins>
+		<!-- Para incluir dinamicamente propiedades de Maven -->
+<!-- 		<resources> -->
+<!-- 			 <resource> -->
+<!-- 			   <directory>src/main/resources</directory> -->
+<!-- 			   <filtering>true</filtering>				  		   		  -->
+<!-- 			 </resource> -->
+<!-- 		</resources>		 -->
+		
+	</build>
+</project>
