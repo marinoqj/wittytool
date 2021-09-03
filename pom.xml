@@ -642,28 +642,28 @@
 					</webApp>
 				</configuration>
 			</plugin>			
-			 <!--  Para generar la imagen de Docker -->			
-             <plugin>
-			  <groupId>com.spotify</groupId>
-			  <artifactId>dockerfile-maven-plugin</artifactId>
-			  <version>1.4.13</version>
-			  <executions>
-			    <execution>
-			      <id>default</id>
-			      <goals>
-			        <goal>build</goal>
-			        <goal>push</goal>
-			      </goals>
-			    </execution>
-			  </executions>
-			  <configuration>
-			  	<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
-                <username>marinoqj</username>
-                <password>8e667415-0922-4ec0-b06b-2896c4c5aa58</password>
-			    <repository>marinoqj/aplicacion</repository>
-			    <tag>${project.version}</tag>
-			  </configuration>
-			</plugin>			
+<!-- 			  Para generar la imagen de Docker			 -->
+<!--              <plugin> -->
+<!-- 			  <groupId>com.spotify</groupId> -->
+<!-- 			  <artifactId>dockerfile-maven-plugin</artifactId> -->
+<!-- 			  <version>1.4.13</version> -->
+<!-- 			  <executions> -->
+<!-- 			    <execution> -->
+<!-- 			      <id>default</id> -->
+<!-- 			      <goals> -->
+<!-- 			        <goal>build</goal> -->
+<!-- 			        <goal>push</goal> -->
+<!-- 			      </goals> -->
+<!-- 			    </execution> -->
+<!-- 			  </executions> -->
+<!-- 			  <configuration> -->
+<!-- 			  	<useMavenSettingsForAuth>true</useMavenSettingsForAuth> -->
+<!--                 <username>marinoqj</username> -->
+<!--                 <password>zzz</password> -->
+<!-- 			    <repository>marinoqj/aplicacion</repository> -->
+<!-- 			    <tag>${project.version}</tag> -->
+<!-- 			  </configuration> -->
+<!-- 			</plugin>			 -->
 		</plugins>
 		<!-- Para incluir dinamicamente propiedades de Maven -->
 <!-- 		<resources> -->
